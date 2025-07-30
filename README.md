@@ -30,8 +30,11 @@ This is the official implementation of our paper "[StitchFusion: Weaving Any Vis
 ## 🎉 Our Paper Accepted as *Oral Presentation* at ACMMM 2025 🎉​
 We are delighted to announce that our paper has been officially accepted by the **ACM International Conference on Multimedia (ACMMM 2025)** and selected for **Oral Presentation**!​
 Highlights of Review Results​
+
 Acceptance Type: Oral Presentation​
+
 Average Review Score: 6.5/10​
+
 Confidence Score: 4/5
 
 ## 🚀 Updates​
