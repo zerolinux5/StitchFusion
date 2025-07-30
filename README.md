@@ -12,20 +12,17 @@
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>
 </p>
 
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/2408-01343/semantic-segmentation-on-deliver)](https://paperswithcode.com/sota/semantic-segmentation-on-deliver?p=2408-01343)
-
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/2408-01343/semantic-segmentation-on-fmb-dataset)](https://paperswithcode.com/sota/semantic-segmentation-on-fmb-dataset?p=2408-01343)
-
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/2408-01343/semantic-segmentation-on-mcubes)](https://paperswithcode.com/sota/semantic-segmentation-on-mcubes?p=2408-01343)
-
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/2408-01343/thermal-image-segmentation-on-pst900)](https://paperswithcode.com/sota/thermal-image-segmentation-on-pst900?p=2408-01343)
-
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/2408-01343/thermal-image-segmentation-on-mfn-dataset)](https://paperswithcode.com/sota/thermal-image-segmentation-on-mfn-dataset?p=2408-01343)
-
 This is the official implementation of our paper "[StitchFusion: Weaving Any Visual Modalities to Enhance Multimodal Semantic Segmentation](http://arxiv.org/abs/2408.01343)".
 
 
 </div>
+
+## 🎉 Our Paper Accepted as *Oral Presentation** at ACMMM 2025 🎉​
+We are delighted to announce that our paper has been officially accepted by the ACM International Conference on Multimedia (ACMMM 2025) and selected for Oral Presentation!​
+Highlights of Review Results​
+Acceptance Type: Oral Presentation​
+Average Review Score: 6.5/10​
+Confidence Score: 4/5
 
 ## 💬 Introduction
 
