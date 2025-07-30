@@ -17,18 +17,6 @@ This is the official implementation of our paper "[StitchFusion: Weaving Any Vis
 
 </div>
 
-## 🎉 Our Paper Accepted as *Oral Presentation** at ACMMM 2025 🎉​
-We are delighted to announce that our paper has been officially accepted by the ACM International Conference on Multimedia (ACMMM 2025) and selected for Oral Presentation!​
-Highlights of Review Results​
-Acceptance Type: Oral Presentation​
-Average Review Score: 6.5/10​
-Confidence Score: 4/5
-
-## 💬 Introduction
-
-Multimodal semantic segmentation shows significant potential for enhancing segmentation accuracy in complex scenes. However, current methods often incorporate specialized feature fusion modules tailored to specific modalities, thereby restricting input flexibility and increasing the number of training parameters. To address these challenges, we propose StitchFusion, a straightforward yet effective modal fusion framework that integrates large-scale pre-trained models directly as encoders and feature fusers. This approach facilitates comprehensive multi-modal and multi-scale feature fusion, accommodating any visual modal inputs.
-Specifically, Our framework achieves modal integration during encoding by sharing multi-modal visual information. To enhance information exchange across modalities, we introduce a multi-directional adapter module (MultiAdapter) to enable cross-modal information transfer during encoding. By leveraging MultiAdapter to propagate multi-scale information across pre-trained encoders during the encoding process, StitchFusion achieves multi-modal visual information integration during encoding. Extensive comparative experiments demonstrate that our model achieves state-of-the-art performance on four multi-modal segmentation datasets with minimal additional parameters. Furthermore, the experimental integration of MultiAdapter with existing Feature Fusion Modules (FFMs) highlights their complementary nature.
-
 ## 🌟 News
 - [x] 2024/9/20: A researcher has inquired about reproducible. pth files, and we are currently organizing them. However, as the permissions have not been granted to interns, we may need to wait for a period of time. If there is any news, we will make an update as soon as possible.If you have any questions, please contact the author's email: libingyu0205@mail.ustc.edu.cn
 - [x] 2024/9/24: 更直接联系我的方式是libingyu0205@163.com，这将直接发到我的手机客户端。
@@ -37,14 +25,34 @@ Specifically, Our framework achieves modal integration during encoding by sharin
 - [x] I have updated the reproducible files and made additional versions of StitchFusion available at **stitchfusion_with_tips_you_can_copy.py**. You can simply copy these files and run the experiments. To use any of these versions, just copy the path of the .pth file into the EVAL/MODEL_PATH field in your chosen config.yaml file.
 - [x] I have release the reproducible files for DELIVER dataset, **However, during replication, I observed that the results differed slightly from the reported values, with variations of around a few tenths—some higher, some lower. Nevertheless, these differences do not affect the overall performance comparison of our model.**.
 - [x] **stitchfusion_with_tips_you_can_copy.py** is all you need to reproduce the results.
-- [x] **Recently, some researchers have reported that they are unable to reproduce the.pth files. Please refer to the issue (closed) to organize the code.**               
-## 🚀 Updates
+- [x] **Recently, some researchers have reported that they are unable to reproduce the.pth files. Please refer to the issue (closed) to organize the code.**      
+
+## 🎉 Our Paper Accepted as *Oral Presentation* at ACMMM 2025 🎉​
+We are delighted to announce that our paper has been officially accepted by the **ACM International Conference on Multimedia (ACMMM 2025)** and selected for **Oral Presentation**!​
+Highlights of Review Results​
+Acceptance Type: Oral Presentation​
+Average Review Score: 6.5/10​
+Confidence Score: 4/5
+
+## 🚀 Updates​
 - [x] 2024/7/27: init repository.
 - [x] 2024/7/27: release the code for StitchFusion.
 - [x] 2024/8/02: upload the paper for StitchFusion.
 - [x] 2024/11/6：upload some checkpoint file for StitchFuion.
 - [x] 2024/11/12: release the reproducible files for DELIVER dataset.
-      
+
+The full paper and related materials will be updated before the conference. Stay tuned!
+
+## 🚩 TO DO​
+- [x] Release the updated model code that incorporates experiments with Swin and MiT.​
+- [x] Upload the training weights corresponding to the updated model.​
+- [x] Ensure the documentation related to the model implementation and training process is complete and synchronized with the code release.
+
+## 💬 Introduction
+
+Multimodal semantic segmentation shows significant potential for enhancing segmentation accuracy in complex scenes. However, current methods often incorporate specialized feature fusion modules tailored to specific modalities, thereby restricting input flexibility and increasing the number of training parameters. To address these challenges, we propose StitchFusion, a straightforward yet effective modal fusion framework that integrates large-scale pre-trained models directly as encoders and feature fusers. This approach facilitates comprehensive multi-modal and multi-scale feature fusion, accommodating any visual modal inputs.
+Specifically, Our framework achieves modal integration during encoding by sharing multi-modal visual information. To enhance information exchange across modalities, we introduce a multi-directional adapter module (MultiAdapter) to enable cross-modal information transfer during encoding. By leveraging MultiAdapter to propagate multi-scale information across pre-trained encoders during the encoding process, StitchFusion achieves multi-modal visual information integration during encoding. Extensive comparative experiments demonstrate that our model achieves state-of-the-art performance on four multi-modal segmentation datasets with minimal additional parameters. Furthermore, the experimental integration of MultiAdapter with existing Feature Fusion Modules (FFMs) highlights their complementary nature.
+
 ## 🔍 StitchFusion model
 
 <div align="center"> 
