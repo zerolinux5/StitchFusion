@@ -260,3 +260,8 @@ Our codebase is based on the following Github repositories. Thanks to the follow
 - [Semantic-segmentation](https://github.com/sithu31296/semantic-segmentation)
 
 **Note:** This is a research level repository and might contain issues/bugs. Please contact the authors for any query.
+
+
+## ⭐ Stargazers
+Thanks for [Stargazers repo roster for StitchFusion](https://github.com/LiBingyu01/StitchFusion/stargazers)
+
