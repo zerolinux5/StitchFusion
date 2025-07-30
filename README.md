@@ -43,13 +43,12 @@ Confidence Score: 4/5
 - [x] 2024/8/02: upload the paper for StitchFusion.
 - [x] 2024/11/6：upload some checkpoint file for StitchFuion.
 - [x] 2024/11/12: release the reproducible files for DELIVER dataset.
-
-The full paper and related materials will be updated before the conference. Stay tuned!
+- [ ] The full paper and related materials will be updated before the conference. Stay tuned!
 
 ## 🚩 TO DO​
-- [x] Release the updated model code that incorporates experiments with Swin and MiT.​
-- [x] Upload the training weights corresponding to the updated model.​
-- [x] Ensure the documentation related to the model implementation and training process is complete and synchronized with the code release.
+- [ ] Release the updated model code that incorporates experiments with Swin and MiT.​
+- [ ] Upload the training weights corresponding to the updated model.​
+- [ ] Ensure the documentation related to the model implementation and training process is complete and synchronized with the code release.
 
 ## 💬 Introduction
 
