@@ -265,3 +265,6 @@ Our codebase is based on the following Github repositories. Thanks to the follow
 ## ⭐ Stargazers
 Thanks for [Stargazers repo roster for StitchFusion](https://github.com/LiBingyu01/StitchFusion/stargazers)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=stitchfusion/stitchfusion,LiBingyu01/StitchFusion&type=Date)](https://www.star-history.com/#stitchfusion/stitchfusion&LiBingyu01/StitchFusion&Date)
