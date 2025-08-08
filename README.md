@@ -267,4 +267,4 @@ Thanks for [Stargazers repo roster for StitchFusion](https://github.com/LiBingyu
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=stitchfusion/stitchfusion,LiBingyu01/StitchFusion&type=Date)](https://www.star-history.com/#stitchfusion/stitchfusion&LiBingyu01/StitchFusion&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=LiBingyu01/StitchFusion&type=Date)](https://www.star-history.com/#LiBingyu01/StitchFusion&Date)
