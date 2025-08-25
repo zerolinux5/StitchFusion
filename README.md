@@ -26,7 +26,8 @@ This is the official implementation of our paper "[StitchFusion: Weaving Any Vis
 - [x] I have release the reproducible files for DELIVER dataset, **However, during replication, I observed that the results differed slightly from the reported values, with variations of around a few tenths—some higher, some lower. Nevertheless, these differences do not affect the overall performance comparison of our model.**.
 - [x] **stitchfusion_with_tips_you_can_copy.py** is all you need to reproduce the results.
 - [x] **Recently, some researchers have reported that they are unable to reproduce the.pth files. Please refer to the issue (closed) to organize the code.**      
-
+- [x] 2025/8/25:: I missed some parts when organizing the code. Please refer to [issues6](https://github.com/LiBingyu01/StitchFusion/issues/6) for modifications. Thanks again to this researcher for the suggestion.
+      
 ## 🎉 Our Paper Accepted as *Oral Presentation* at ACMMM 2025 🎉​
 We are delighted to announce that our paper has been officially accepted by the **ACM International Conference on Multimedia (ACMMM 2025)** and selected for **Oral Presentation**!​
 Highlights of Review Results​
