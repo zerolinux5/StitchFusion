@@ -23,6 +23,7 @@ from semseg.optimizers import get_optimizer
 from semseg.utils.utils import fix_seeds, setup_cudnn, cleanup_ddp, setup_ddp, get_logger, cal_flops, print_iou
 from semseg.metrics import Metrics
 from val_mm import evaluate
+import torchvision.transforms.functional as TF
 
 
 def main(cfg, gpu, save_dir):
@@ -136,6 +137,16 @@ def main(cfg, gpu, save_dir):
 
         for iter, (sample, lbl) in pbar:
             optimizer.zero_grad(set_to_none=True)
+            if iter % 100 == 0:
+                modal_images = {}
+                for i, x in enumerate(sample):
+                    img = x[0].detach().cpu()
+                    if img.shape[0] == 1:
+                        img = img.repeat(3, 1, 1)
+                    img = TF.to_pil_image(img)
+                    modal_images[f"modal_{i}"] = wandb.Image(img, caption=f"epoch{epoch}_iter{iter}_modal{i}")
+                wandb.log(modal_images, step=epoch * len(trainloader) + iter)
+
             sample = [x.to(device) for x in sample]
             lbl = lbl.to(device)
 
@@ -180,12 +191,15 @@ def main(cfg, gpu, save_dir):
             (epoch + 1) > train_cfg['EVAL_START']) or (epoch + 1) == epochs:
             if (train_cfg['DDP'] and torch.distributed.get_rank()
                     == 0) or (not train_cfg['DDP']):
-                acc, macc, _, mf1, ious, miou, val_loss = evaluate(
-                    model, valloader, device, loss_fn)
+                global_step = (epoch + 1) * iters_per_epoch
+                acc, macc, _, mf1, ious, miou, val_loss, val_loss_ce = evaluate(
+                    model, valloader, device, loss_fn, log_to_wandb=True, global_step=global_step)
                 writer.add_scalar('val/mIoU', miou, epoch)
                 writer.add_scalar('val/loss', val_loss, epoch)
+                writer.add_scalar('val/loss_ce', val_loss_ce, epoch)
                 log_data = {
                     "Test Loss": val_loss,
+                    "Test Loss CE": val_loss_ce,
                     "Test mIoU": miou,
                     "Test Pixel Acc": macc,
                     "Test F1": mf1,

@@ -24,6 +24,9 @@ from torch.utils.data import DistributedSampler, RandomSampler
 from torch import distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from semseg.utils.utils import fix_seeds, setup_cudnn, cleanup_ddp, setup_ddp, get_logger, cal_flops, print_iou
+import torchvision.transforms.functional as TF
+import wandb
+from torch.nn import CrossEntropyLoss
 
 def pad_image(img, target_size):
     rows_to_pad = max(target_size[0] - img.shape[2], 0)
@@ -66,15 +69,28 @@ def sliding_predict(model, image, num_classes, flip=True):
     return total_predictions.unsqueeze(0)
 
 @torch.no_grad()
-def evaluate(model, dataloader, device, loss_fn=None):
+def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global_step=None):
     print('Evaluating...')
     model.eval()
     n_classes = dataloader.dataset.n_classes
     metrics = Metrics(n_classes, dataloader.dataset.ignore_label, device)
+    ce_loss_fn = CrossEntropyLoss(ignore_index=dataloader.dataset.ignore_label)
     sliding = False
     test_loss = 0.0
+    test_loss_ce = 0.0
     iter = 0
     for images, labels in tqdm(dataloader):
+        if log_to_wandb and iter % 20 == 0:
+            modal_images = {}
+            for i, x in enumerate(images):
+                img = x[0].detach().cpu()
+                if img.shape[0] == 1:
+                    img = img.repeat(3, 1, 1)
+                img = TF.to_pil_image(img)
+                modal_images[f"val_modal_{i}"] = wandb.Image(img, caption=f"val_iter{iter}_modal{i}")
+            modal_images["val_label"] = wandb.Image(labels[0].cpu().numpy())
+            wandb.log(modal_images, step=global_step + iter)
+
         images = [x.to(device) for x in images]
         labels = labels.to(device)
         if sliding:
@@ -89,14 +105,17 @@ def evaluate(model, dataloader, device, loss_fn=None):
         if loss_fn is not None:
             loss = loss_fn(preds, labels)
             test_loss += loss.item()
+            loss_ce = ce_loss_fn(preds, labels)
+            test_loss_ce += loss_ce.item()
         iter += 1
     
     test_loss /= iter
+    test_loss_ce /= iter
     ious, miou = metrics.compute_iou()
     acc, macc = metrics.compute_pixel_acc()
     f1, mf1 = metrics.compute_f1()
     
-    return acc, macc, f1, mf1, ious, miou, test_loss
+    return acc, macc, f1, mf1, ious, miou, test_loss, test_loss_ce
 
 
 @torch.no_grad()

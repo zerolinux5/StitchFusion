@@ -26,7 +26,7 @@ DATASET:
 TRAIN:
   IMAGE_SIZE    : [512, 512]      # training image size in (h, w) === Fixed in dataloader, following MCubeSNet
   BATCH_SIZE    : 4               # batch size used to train
-  EPOCHS        : 20             # number of epochs to train
+  EPOCHS        : 40             # number of epochs to train
   EVAL_START    : 1               # evaluation interval during training
   EVAL_INTERVAL : 1               # evaluation interval during training
   AMP           : true           # use AMP in training
