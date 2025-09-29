@@ -79,6 +79,7 @@ def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global
     test_loss = 0.0
     test_loss_ce = 0.0
     iter = 0
+    modal_name_list = ['img', 'depth', 'event', 'lidar']
     for images, labels in tqdm(dataloader):
         images = [x.to(device) for x in images]
         labels = labels.to(device)
@@ -91,15 +92,14 @@ def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global
 
         
         if log_to_wandb and iter % 20 == 0:
-            print(preds.argmax(dim=1).shape)
-            print(preds.argmax(dim=1)[0].shape)
             modal_images = {}
             for i, x in enumerate(images):
                 img = x[0].detach().cpu()
                 if img.shape[0] == 1:
                     img = img.repeat(3, 1, 1)
                 img = TF.to_pil_image(img)
-                modal_images[f"val_modal_{i}"] = wandb.Image(img, caption=f"val_iter{iter}_modal{i}")
+                modal_name = modal_name_list[i]
+                modal_images[f"val_modal_{modal_name}"] = wandb.Image(img, caption=f"val_iter{iter}_modal_{modal_name}")
             class_labels = {idx: label for idx, label in enumerate(["Building", "Fence", "Other", "Pedestrian", "Pole", "RoadLine", "Road", "SideWalk", "Vegetation", 
                 "Cars", "Wall", "TrafficSign", "Sky", "Ground", "Bridge", "RailTrack", "GroundRail", 
                 "TrafficLight", "Static", "Dynamic", "Water", "Terrain", "TwoWheeler", "Bus", "Truck"])}

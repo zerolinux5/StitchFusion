@@ -148,7 +148,8 @@ def main(cfg, gpu, save_dir):
                     if img.shape[0] == 1:
                         img = img.repeat(3, 1, 1)
                     img = TF.to_pil_image(img)
-                    modal_images[f"modal_{i}"] = wandb.Image(img, caption=f"epoch{epoch}_iter{iter}_modal{i}")
+                    modal_name = cfg['DATASET']['MODALS'][i]
+                    modal_images[f"modal_{modal_name}"] = wandb.Image(img, caption=f"epoch{epoch}_iter{iter}_modal_{modal_name}")
                 wandb.log(modal_images, step=epoch * len(trainloader) + iter)
 
             sample = [x.to(device) for x in sample]
