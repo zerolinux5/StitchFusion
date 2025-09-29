@@ -1,4 +1,8 @@
 import os
+import sys
+module_dir = "/mnt/gpu_storage/cs_courses/jmagana/StitchFusion"
+if module_dir not in sys.path:
+    sys.path.append(module_dir)
 import torch
 import argparse
 import yaml

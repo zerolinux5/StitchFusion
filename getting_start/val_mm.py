@@ -80,17 +80,6 @@ def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global
     test_loss_ce = 0.0
     iter = 0
     for images, labels in tqdm(dataloader):
-        if log_to_wandb and iter % 20 == 0:
-            modal_images = {}
-            for i, x in enumerate(images):
-                img = x[0].detach().cpu()
-                if img.shape[0] == 1:
-                    img = img.repeat(3, 1, 1)
-                img = TF.to_pil_image(img)
-                modal_images[f"val_modal_{i}"] = wandb.Image(img, caption=f"val_iter{iter}_modal{i}")
-            modal_images["val_label"] = wandb.Image(labels[0].cpu().numpy())
-            wandb.log(modal_images, step=global_step + iter)
-
         images = [x.to(device) for x in images]
         labels = labels.to(device)
         if sliding:
@@ -99,6 +88,32 @@ def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global
         else:
             # preds = model(images).softmax(dim=1)
             preds = model(images)
+
+        
+        if log_to_wandb and iter % 20 == 0:
+            print(preds.argmax(dim=1).shape)
+            print(preds.argmax(dim=1)[0].shape)
+            modal_images = {}
+            for i, x in enumerate(images):
+                img = x[0].detach().cpu()
+                if img.shape[0] == 1:
+                    img = img.repeat(3, 1, 1)
+                img = TF.to_pil_image(img)
+                modal_images[f"val_modal_{i}"] = wandb.Image(img, caption=f"val_iter{iter}_modal{i}")
+            class_labels = {idx: label for idx, label in enumerate(["Building", "Fence", "Other", "Pedestrian", "Pole", "RoadLine", "Road", "SideWalk", "Vegetation", 
+                "Cars", "Wall", "TrafficSign", "Sky", "Ground", "Bridge", "RailTrack", "GroundRail", 
+                "TrafficLight", "Static", "Dynamic", "Water", "Terrain", "TwoWheeler", "Bus", "Truck"])}
+            modal_images["val_label"] = wandb.Image(images[0][0].detach().cpu(), masks={
+                "predictions": {
+                    "mask_data": preds.argmax(dim=1)[0].cpu().numpy(),
+                    "class_labels": class_labels
+                },
+                "ground_truth": {
+                    "mask_data": labels[0].cpu().numpy(),
+                    "class_labels": class_labels
+                }
+            })
+            wandb.log(modal_images, step=global_step + iter)
         
         metrics.update(preds.softmax(dim=1), labels)
 
