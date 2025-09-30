@@ -195,6 +195,7 @@ def main(cfg, gpu, save_dir):
         train_log_data = {
             "Epoch": epoch + 1,
             "Train Loss": train_loss,
+            "Train Loss CE": ce_train_loss,
             "Train mIoU": miou,
             "Train Pixel Acc": macc,
             "Train F1": mf1
