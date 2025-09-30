@@ -28,6 +28,7 @@ from semseg.utils.utils import fix_seeds, setup_cudnn, cleanup_ddp, setup_ddp, g
 from semseg.metrics import Metrics
 from val_mm import evaluate
 import torchvision.transforms.functional as TF
+from torch.nn import CrossEntropyLoss
 
 
 def main(cfg, gpu, save_dir):
@@ -112,6 +113,7 @@ def main(cfg, gpu, save_dir):
                            sampler=sampler_val)
 
     scaler = GradScaler(enabled=train_cfg['AMP'])
+    ce_loss_fn = CrossEntropyLoss(ignore_index=trainloader.dataset.ignore_label)
     if (train_cfg['DDP']
             and torch.distributed.get_rank() == 0) or (not train_cfg['DDP']):
         writer = SummaryWriter(str(save_dir))
@@ -128,6 +130,7 @@ def main(cfg, gpu, save_dir):
         if train_cfg['DDP']: sampler.set_epoch(epoch)
 
         train_loss = 0.0
+        ce_train_loss = 0.0
         lr = scheduler.get_lr()
         lr = sum(lr) / len(lr)
         pbar = tqdm(
@@ -158,6 +161,7 @@ def main(cfg, gpu, save_dir):
             with autocast(enabled=train_cfg['AMP']):
                 logits = model(sample)
                 loss = loss_fn(logits, lbl)
+                loss_ce = ce_loss_fn(logits, lbl)
 
             metrics.update(logits.softmax(dim=1), lbl)
 
@@ -172,15 +176,18 @@ def main(cfg, gpu, save_dir):
             if lr <= 1e-8:
                 lr = 1e-8  # minimum of lr
             train_loss += loss.item()
+            ce_train_loss += loss_ce.item()
 
             pbar.set_description(
                 f"Epoch: [{epoch+1}/{epochs}] Iter: [{iter+1}/{iters_per_epoch}] LR: {lr:.8f} Loss: {train_loss / (iter+1):.8f}"
             )
 
         train_loss /= iter + 1
+        ce_train_loss /= iter + 1
         if (train_cfg['DDP'] and torch.distributed.get_rank()
                 == 0) or (not train_cfg['DDP']):
             writer.add_scalar('train/loss', train_loss, epoch)
+            writer.add_scalar('train/ce_loss', ce_train_loss, epoch)
         torch.cuda.empty_cache()
         _, miou = metrics.compute_iou()
         _, macc = metrics.compute_pixel_acc()
