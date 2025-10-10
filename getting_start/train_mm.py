@@ -189,9 +189,11 @@ def main(cfg, gpu, save_dir):
             writer.add_scalar('train/loss', train_loss, epoch)
             writer.add_scalar('train/ce_loss', ce_train_loss, epoch)
         torch.cuda.empty_cache()
-        _, miou = metrics.compute_iou()
+        ious, miou = metrics.compute_iou()
         _, macc = metrics.compute_pixel_acc()
         _, mf1 = metrics.compute_f1()
+        train_ious = {f"Train IoU {class_names[idx]}": iou for idx, iou in enumerate(ious)}
+
         train_log_data = {
             "Epoch": epoch + 1,
             "Train Loss": train_loss,
@@ -200,6 +202,7 @@ def main(cfg, gpu, save_dir):
             "Train Pixel Acc": macc,
             "Train F1": mf1
         }
+        train_log_data.update(train_ious)
         if ((epoch + 1) % train_cfg['EVAL_INTERVAL'] == 0 and
             (epoch + 1) > train_cfg['EVAL_START']) or (epoch + 1) == epochs:
             if (train_cfg['DDP'] and torch.distributed.get_rank()
@@ -210,6 +213,7 @@ def main(cfg, gpu, save_dir):
                 writer.add_scalar('val/mIoU', miou, epoch)
                 writer.add_scalar('val/loss', val_loss, epoch)
                 writer.add_scalar('val/loss_ce', val_loss_ce, epoch)
+                test_ious = {f"Test IoU {class_names[idx]}": iou for idx, iou in enumerate(ious)}
                 log_data = {
                     "Test Loss": val_loss,
                     "Test Loss CE": val_loss_ce,
@@ -217,6 +221,7 @@ def main(cfg, gpu, save_dir):
                     "Test Pixel Acc": macc,
                     "Test F1": mf1,
                 }
+                log_data.update(test_ious)
                 log_data.update(train_log_data)
                 wandb.log(log_data)
                 if miou > best_mIoU:
@@ -280,7 +285,7 @@ if __name__ == '__main__':
     fix_seeds(3407)
     setup_cudnn()
     gpu = setup_ddp()
-    wandb.init(project="StitchFusion_Deliver_double", name=cfg['WANDB_NAME'])
+    wandb.init(project="StitchFusion_Deliver_full", name=cfg['WANDB_NAME'])
     # gpu=0
     modals = ''.join([m[0] for m in cfg['DATASET']['MODALS']])
     model = cfg['MODEL']['BACKBONE']
