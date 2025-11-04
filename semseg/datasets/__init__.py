@@ -4,11 +4,13 @@ from .pst import PST
 from .MFNet import MFNet
 from .nyu import NYUDepthv2
 from .DELIVER import DELIVER
+from .KITTI import KITTI
 __all__ = [
     'MCubeS',
     'FMB',
     'PST',
     'MFNet',
     'NYUDepthv2',
-    'DELIVER'
+    'DELIVER',
+    'KITTI'
 ]

@@ -44,6 +44,7 @@ def main(cfg, gpu, save_dir):
     epochs, lr = train_cfg['EPOCHS'], optim_cfg['LR']
     resume_path = cfg['MODEL']['RESUME']
     gpus = int(os.environ['WORLD_SIZE'])
+    dataset_name = dataset_cfg['NAME']
 
     traintransform = get_train_augmentation(
         train_cfg['IMAGE_SIZE'], seg_fill=dataset_cfg['IGNORE_LABEL'])
@@ -209,7 +210,7 @@ def main(cfg, gpu, save_dir):
                     == 0) or (not train_cfg['DDP']):
                 global_step = (epoch + 1) * iters_per_epoch
                 acc, macc, _, mf1, ious, miou, val_loss, val_loss_ce = evaluate(
-                    model, valloader, device, loss_fn, log_to_wandb=True, global_step=global_step)
+                    model, valloader, device, loss_fn, log_to_wandb=True, global_step=global_step, name=dataset_name)
                 writer.add_scalar('val/mIoU', miou, epoch)
                 writer.add_scalar('val/loss', val_loss, epoch)
                 writer.add_scalar('val/loss_ce', val_loss_ce, epoch)
@@ -285,7 +286,7 @@ if __name__ == '__main__':
     fix_seeds(3407)
     setup_cudnn()
     gpu = setup_ddp()
-    wandb.init(project="StitchFusion_Deliver_full", name=cfg['WANDB_NAME'])
+    wandb.init(project="StitchFusion_Kitti_img_lidar_intensity_depth_v2", name=cfg['WANDB_NAME'])
     # gpu=0
     modals = ''.join([m[0] for m in cfg['DATASET']['MODALS']])
     model = cfg['MODEL']['BACKBONE']

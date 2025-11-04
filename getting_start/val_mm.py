@@ -18,6 +18,7 @@ from semseg.datasets import *
 from semseg.augmentations_mm import get_val_augmentation
 from semseg.metrics import Metrics
 from semseg.utils.utils import setup_cudnn
+from semseg.datasets.labels import trainId2labelText
 from math import ceil
 import numpy as np
 from torch.utils.data import DistributedSampler, RandomSampler
@@ -69,7 +70,7 @@ def sliding_predict(model, image, num_classes, flip=True):
     return total_predictions.unsqueeze(0)
 
 @torch.no_grad()
-def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global_step=None):
+def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global_step=None, name="DELIVER"):
     print('Evaluating...')
     model.eval()
     n_classes = dataloader.dataset.n_classes
@@ -100,9 +101,12 @@ def evaluate(model, dataloader, device, loss_fn=None, log_to_wandb=False, global
                 img = TF.to_pil_image(img)
                 modal_name = modal_name_list[i]
                 modal_images[f"val_modal_{modal_name}"] = wandb.Image(img, caption=f"val_iter{iter}_modal_{modal_name}")
-            class_labels = {idx: label for idx, label in enumerate(["Building", "Fence", "Other", "Pedestrian", "Pole", "RoadLine", "Road", "SideWalk", "Vegetation", 
-                "Cars", "Wall", "TrafficSign", "Sky", "Ground", "Bridge", "RailTrack", "GroundRail", 
-                "TrafficLight", "Static", "Dynamic", "Water", "Terrain", "TwoWheeler", "Bus", "Truck"])}
+            if name == "DELIVER":
+                class_labels = {idx: label for idx, label in enumerate(["Building", "Fence", "Other", "Pedestrian", "Pole", "RoadLine", "Road", "SideWalk", "Vegetation", 
+                    "Cars", "Wall", "TrafficSign", "Sky", "Ground", "Bridge", "RailTrack", "GroundRail", 
+                    "TrafficLight", "Static", "Dynamic", "Water", "Terrain", "TwoWheeler", "Bus", "Truck"])}
+            else:
+                class_labels = trainId2labelText
             modal_images["val_label"] = wandb.Image(images[0][0].detach().cpu(), masks={
                 "predictions": {
                     "mask_data": preds.argmax(dim=1)[0].cpu().numpy(),
