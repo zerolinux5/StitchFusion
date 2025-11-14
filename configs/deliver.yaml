@@ -21,7 +21,8 @@ DATASET:
   # MODALS        : ['img', 'lidar']
   # MODALS        : ['img', 'depth', 'event']
   # MODALS        : ['img', 'depth', 'lidar']
-  MODALS        : ['img', 'depth', 'event', 'lidar']
+  MODALS        : ['img', 'event', 'lidar']
+  # MODALS        : ['img', 'depth', 'event', 'lidar']
 
 TRAIN:
   IMAGE_SIZE    : [512, 512]      # training image size in (h, w) === Fixed in dataloader, following MCubeSNet

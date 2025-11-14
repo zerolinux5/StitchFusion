@@ -286,7 +286,7 @@ if __name__ == '__main__':
     fix_seeds(3407)
     setup_cudnn()
     gpu = setup_ddp()
-    wandb.init(project="StitchFusion_Kitti_img_lidar_intensity_depth_v2", name=cfg['WANDB_NAME'])
+    wandb.init(project="StitchFusion_Kitti_img_lidar_intesnity_v2", name=cfg['WANDB_NAME'])
     # gpu=0
     modals = ''.join([m[0] for m in cfg['DATASET']['MODALS']])
     model = cfg['MODEL']['BACKBONE']
